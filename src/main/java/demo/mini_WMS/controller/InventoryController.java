@@ -2,6 +2,7 @@ package demo.mini_WMS.controller;
 
 import demo.mini_WMS.domain.Inventory;
 import demo.mini_WMS.domain.Warehouse;
+import demo.mini_WMS.dto.request.InventoryRequest;
 import demo.mini_WMS.dto.request.ReceiveRequest;
 import demo.mini_WMS.repository.InventoryRepository;
 import demo.mini_WMS.repository.ProductRepository;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/inventory")
 @RequiredArgsConstructor
 public class InventoryController {
     private final InventoryService inventoryService;
@@ -25,24 +26,25 @@ public class InventoryController {
     private final ProductRepository productRepo;
     private final WarehouseRepository warehouseRepo;
 
-    // 특정 창고의 재고 목록 조회
-    @GetMapping("/inventories")
-    public List<Inventory> getInventories(@RequestParam Long warehouseId) {
-        Warehouse wh = warehouseRepo.findById(warehouseId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid warehouseId"));
-        // 단순히 warehouse 기준으로 전체 재고 조회 (레포지토리에 커스텀 메서드 구현해도 됨)
-        return inventoryRepo.findAll().stream()
-                .filter(inv -> inv.getWarehouse().getId().equals(warehouseId))
-                .collect(Collectors.toList());
+    @PostMapping("/receive")
+    public String receiveProduct(@RequestBody InventoryRequest request) {
+        inventoryService.receiveProduct(
+                request.getProductId(),
+                request.getWarehouseId(),
+                request.getQuantity(),
+                request.getSupplier()
+        );
+        return "입고 완료";
     }
 
-    // 상품 입고 처리
-    @PostMapping("/inventories/receive")
-    public ResponseEntity<Inventory> receiveProduct(@RequestBody ReceiveRequest req) {
-        Inventory updated = inventoryService.receiveProduct(
-                req.getProductId(), req.getWarehouseId(),
-                req.getQuantity(), req.getSupplier());
-        return ResponseEntity.ok(updated);
+    @PostMapping("/release")
+    public String releaseProduct(@RequestBody InventoryRequest request) {
+        inventoryService.releaseProduct(
+                request.getProductId(),
+                request.getWarehouseId(),
+                request.getQuantity()
+        );
+        return "출고 완료";
     }
 
     // (추가로 상품 목록, 창고 목록 API 등 구현 가능)

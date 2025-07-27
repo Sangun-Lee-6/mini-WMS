@@ -1,47 +1,71 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <title>Inventory Management</title>
-    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.css" />
+    <meta charset="UTF-8">
+    <title>재고 관리</title>
+    <link rel="stylesheet" th:href="@{/css/inventory.css}">
 </head>
 <body>
-<h1>재고 현황</h1>
-<table border="1">
-    <thead>
-    <tr><th>상품명</th><th>SKU</th><th>재고수량</th></tr>
-    </thead>
-    <tbody>
-    <tr th:each="inv : ${inventoryList}">
-        <td th:text="${inv.product.name}">Product Name</td>
-        <td th:text="${inv.product.skuCode}">SKUCode</td>
-        <td th:text="${inv.quantity}">Quantity</td>
-    </tr>
-    </tbody>
-</table>
+<h1>📦 재고 현황</h1>
 
-<h2>상품 입고</h2>
-<form th:action="@{/inventory/receive}" method="post">
-    <label>상품:
-        <select name="productId">
-            <option th:each="prod : ${products}" th:value="${prod.id}" th:text="${prod.name}">Product</option>
-        </select>
-    </label>
-    <label>수량: <input type="number" name="quantity" /></label>
-    <input type="hidden" name="warehouseId" th:value="${warehouse.id}" />
-    <button type="submit">입고 처리</button>
-</form>
+<div class="metadata">
+    <strong>창고명:</strong> <span th:text="${warehouse.name}">창고명</span><br>
+    <strong>위치:</strong> <span th:text="${warehouse.location}">창고 위치</span>
+</div>
 
-<h2>상품 출고</h2>
-<form th:action="@{/inventory/release}" method="post">
-    <label>상품:
-        <select name="productId">
-            <option th:each="prod : ${products}" th:value="${prod.id}" th:text="${prod.name}">Product</option>
-        </select>
-    </label>
-    <label>수량: <input type="number" name="quantity" /></label>
-    <input type="hidden" name="warehouseId" th:value="${warehouse.id}" />
-    <button type="submit">출고 처리</button>
-</form>
+<div class="section">
+    <h2>📋 재고 목록</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>상품명</th>
+            <th>수량</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="inv : ${inventoryList}">
+            <td th:text="${inv.product.name}">상품명</td>
+            <td th:text="${inv.quantity}">0</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section form-container">
+    <h2>⬆️ 입고 처리</h2>
+    <form id="receiveForm">
+        <label>상품:
+            <select name="productId">
+                <option th:each="p : ${products}" th:value="${p.id}" th:text="${p.name}">상품</option>
+            </select>
+        </label>
+        <label>수량:
+            <input type="number" name="quantity" required>
+        </label>
+        <label>공급업체:
+            <input type="text" name="supplier">
+        </label>
+        <input type="hidden" name="warehouseId" th:value="${warehouse.id}">
+        <button type="submit">입고</button>
+    </form>
+</div>
+
+<div class="section form-container">
+    <h2>⬇️ 출고 처리</h2>
+    <form id="releaseForm">
+        <label>상품:
+            <select name="productId">
+                <option th:each="p : ${products}" th:value="${p.id}" th:text="${p.name}">상품</option>
+            </select>
+        </label>
+        <label>수량:
+            <input type="number" name="quantity" required>
+        </label>
+        <input type="hidden" name="warehouseId" th:value="${warehouse.id}">
+        <button type="submit">출고</button>
+    </form>
+</div>
+
+<script th:src="@{/js/inventory.js}"></script>
 </body>
 </html>
