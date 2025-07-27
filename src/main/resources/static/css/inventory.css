@@ -83,3 +83,9 @@ hr {
     border-radius: 6px;
     border: 1px solid #333;
 }
+
+.section button {
+    margin: 10px;
+    padding: 20px 40px;
+    font-size: 18px;
+}

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>WMS 홈</title>
+    <link rel="stylesheet" th:href="@{/css/inventory.css}">
+</head>
+<body>
+<h1>📦 WMS 시스템 홈</h1>
+
+<div class="section">
+    <button onclick="location.href='/inventory'">입고</button>
+    <button onclick="location.href='/storage'">보관</button>
+    <button onclick="location.href='/picking'">피킹</button>
+    <button onclick="location.href='/packing'">패킹</button>
+    <button onclick="location.href='/outbound'">출고</button>
+</div>
+</body>
+</html>
