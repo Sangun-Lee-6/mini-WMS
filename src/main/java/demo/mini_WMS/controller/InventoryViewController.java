@@ -41,29 +41,4 @@ public class InventoryViewController {
         model.addAttribute("warehouse", wh);
         return "inventory";  // inventory.html 뷰 템플릿 반환
     }
-
-    @PostMapping("/inventory/receive")
-    public String receiveSubmit(
-            @RequestParam("productId") Long productId,
-            @RequestParam("warehouseId") Long warehouseId,
-            @RequestParam("quantity") Long quantity,
-            @RequestParam(value = "supplier", required = false) String supplier,
-            RedirectAttributes ra) {
-        // 서비스 호출하여 입고 처리
-        inventoryService.receiveProduct(productId, warehouseId, quantity, supplier);
-        ra.addAttribute("warehouseId", warehouseId);
-        // 처리 완료 후 재고 화면으로 리다이렉트 (query param에 warehouseId 포함)
-        return "redirect:/inventory";
-    }
-
-    @PostMapping("/inventory/release")
-    public String releaseSubmit(
-            @RequestParam("productId") Long productId,
-            @RequestParam("warehouseId") Long warehouseId,
-            @RequestParam("quantity") Long quantity,
-            RedirectAttributes ra) {
-        inventoryService.releaseProduct(productId, warehouseId, quantity);
-        ra.addAttribute("warehouseId", warehouseId);
-        return "redirect:/inventory";
-    }
 }
