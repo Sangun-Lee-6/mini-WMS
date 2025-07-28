@@ -1,6 +1,7 @@
 package demo.mini_WMS.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,6 +37,7 @@ public class Inventory {
         this.quantity -= qty;
     }
 
+    @Builder
     public Inventory(Product product, Warehouse warehouse, Long quantity) {
         this.product = product;
         this.warehouse = warehouse;

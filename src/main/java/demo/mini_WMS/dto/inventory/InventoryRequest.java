@@ -1,11 +1,11 @@
-package demo.mini_WMS.dto.request;
+package demo.mini_WMS.dto.inventory;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ReceiveRequest {
+public class InventoryRequest {
     private Long productId;
     private Long warehouseId;
     private Long quantity;

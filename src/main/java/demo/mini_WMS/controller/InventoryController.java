@@ -1,21 +1,12 @@
 package demo.mini_WMS.controller;
 
-import demo.mini_WMS.domain.Inventory;
-import demo.mini_WMS.domain.Warehouse;
-import demo.mini_WMS.dto.request.InventoryRequest;
-import demo.mini_WMS.dto.request.ReceiveRequest;
+import demo.mini_WMS.dto.inventory.InventoryRequest;
 import demo.mini_WMS.repository.InventoryRepository;
 import demo.mini_WMS.repository.ProductRepository;
 import demo.mini_WMS.repository.WarehouseRepository;
 import demo.mini_WMS.service.InventoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/inventory")
