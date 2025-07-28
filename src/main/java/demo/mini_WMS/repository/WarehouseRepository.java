@@ -23,13 +23,6 @@ public class WarehouseRepository {
         return Optional.ofNullable(em.find(Warehouse.class, id));
     }
 
-    public Optional<Warehouse> findByName(String name) {
-        List<Warehouse> result = em.createQuery("SELECT w FROM Warehouse w WHERE w.name = :name", Warehouse.class)
-                .setParameter("name", name)
-                .getResultList();
-        return result.stream().findFirst();
-    }
-
     public List<Warehouse> findAll() {
         return em.createQuery("SELECT w FROM Warehouse w", Warehouse.class).getResultList();
     }

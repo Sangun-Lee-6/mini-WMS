@@ -46,3 +46,22 @@ li:hover {
 li:last-child {
     border-bottom: none;
 }
+nav {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+nav button {
+    padding: 12px 24px;
+    background-color: #00bcd4;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+nav button:hover {
+    background-color: #0097a7;
+}

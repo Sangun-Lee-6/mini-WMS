@@ -1,62 +1,53 @@
 package demo.mini_WMS.service;
 
-import demo.mini_WMS.domain.InboundReceipt;
 import demo.mini_WMS.domain.Inventory;
 import demo.mini_WMS.domain.Product;
 import demo.mini_WMS.domain.Warehouse;
-import demo.mini_WMS.repository.InboundReceiptRepository;
-import demo.mini_WMS.repository.InventoryRepository;
-import demo.mini_WMS.repository.ProductRepository;
-import demo.mini_WMS.repository.WarehouseRepository;
+import demo.mini_WMS.domain.WarehouseLocation;
+import demo.mini_WMS.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Random;
+
 @Service
 @RequiredArgsConstructor  // Lombok: final 필드에 대한 생성자 주입
 public class InventoryService {
-    private final ProductRepository productRepo;
-    private final WarehouseRepository warehouseRepo;
-    private final InventoryRepository inventoryRepo;
-    private final InboundReceiptRepository inboundRepo;
+    private final InventoryRepository inventoryRepository;
+    private final WarehouseLocationRepository locationRepository;
 
+    /**
+     * 창고 위치 랜덤 할당
+     */
     @Transactional
-    public Inventory receiveProduct(Long productId, Long warehouseId, long quantity, String supplier) {
-        // 1. 해당 상품 및 창고 엔티티 조회 (없으면 예외 발생)
-        Product product = productRepo.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid product ID"));
-        Warehouse warehouse = warehouseRepo.findById(warehouseId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid warehouse ID"));
+    public WarehouseLocation assignAvailableLocation(Warehouse warehouse, Product product) {
+        List<WarehouseLocation> locations = locationRepository.findByWarehouse(warehouse);
 
-        // 2. 재고 엔티티 조회 또는 새로 생성
-        Inventory inventory = inventoryRepo.findByProductAndWarehouse(product, warehouse)
-                .orElse(new Inventory(product, warehouse, 0L));
+        List<WarehouseLocation> availableLocations = locations.stream()
+                .filter(loc -> {
+                    List<Inventory> inventories = inventoryRepository.findByLocation(loc);
 
-        // 3. 재고 증가 및 저장
-        inventory.addQuantity(quantity);
-        Inventory savedInventory = inventoryRepo.save(inventory);
+                    // 1. 완전히 비어있는 경우
+                    if (inventories.isEmpty()) return true;
 
-        // 4. 입고 이력 기록 저장
-        InboundReceipt receipt = new InboundReceipt(product, warehouse, quantity, supplier);
-        inboundRepo.save(receipt);
+                    // 2. 이미 해당 상품만 있고 수량이 capacity 미만인 경우
+                    if (inventories.size() == 1) {
+                        Inventory inv = inventories.get(0);
+                        return inv.getProduct().equals(product) && inv.getQuantity() < loc.getCapacity();
+                    }
 
-        return savedInventory;
-    }
+                    return false;
+                })
+                .toList();
 
-    @Transactional
-    public void releaseProduct(Long productId, Long warehouseId, Long quantity) {
-        Product product = productRepo.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid product"));
-        Warehouse warehouse = warehouseRepo.findById(warehouseId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid warehouse"));
-        Inventory inventory = inventoryRepo.findByProductAndWarehouse(product, warehouse)
-                .orElseThrow(() -> new IllegalArgumentException("No inventory found"));
-
-        if (inventory.getQuantity() < quantity) {
-            throw new IllegalArgumentException("Not enough stock to release");
+        if (availableLocations.isEmpty()) {
+            throw new IllegalStateException("모든 위치가 가득 찼거나 상품 종류 제한에 걸렸습니다.");
         }
 
-        inventory.setQuantity(inventory.getQuantity() - quantity);
-        // 필요시 출고 기록 저장 (OutboundReceipt 등)
+        int randomIndex = new Random().nextInt(availableLocations.size());
+        return availableLocations.get(randomIndex);
     }
+
 }

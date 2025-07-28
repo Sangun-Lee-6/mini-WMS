@@ -3,6 +3,7 @@ package demo.mini_WMS.repository;
 import demo.mini_WMS.domain.Inventory;
 import demo.mini_WMS.domain.Product;
 import demo.mini_WMS.domain.Warehouse;
+import demo.mini_WMS.domain.WarehouseLocation;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -25,26 +26,28 @@ public class InventoryRepository {
         }
     }
 
-    public Optional<Inventory> findById(Long id) {
-        return Optional.ofNullable(em.find(Inventory.class, id));
-    }
-
-    public Optional<Inventory> findByProductAndWarehouse(Product product, Warehouse warehouse) {
+    public Optional<Inventory> findByProductAndWarehouse(Product product, Warehouse warehouse, WarehouseLocation location) {
         List<Inventory> result = em.createQuery(
-                        "SELECT i FROM Inventory i WHERE i.product = :product AND i.warehouse = :warehouse", Inventory.class)
+                        "SELECT i FROM Inventory i " +
+                                "WHERE i.product = :product " +
+                                "AND i.warehouse = :warehouse " +
+                                "AND i.location = :location", Inventory.class)
                 .setParameter("product", product)
                 .setParameter("warehouse", warehouse)
+                .setParameter("location", location)
                 .getResultList();
-        return result.stream().findFirst();
-    }
 
-    public List<Inventory> findByWarehouse(Warehouse warehouse) {
-        return em.createQuery("SELECT i FROM Inventory i WHERE i.warehouse = :warehouse", Inventory.class)
-                .setParameter("warehouse", warehouse)
-                .getResultList();
+        return result.stream().findFirst();
     }
 
     public List<Inventory> findAll() {
         return em.createQuery("SELECT i FROM Inventory i", Inventory.class).getResultList();
+    }
+
+    // findByLocation 구현
+    public List<Inventory> findByLocation(WarehouseLocation location) {
+        return em.createQuery("SELECT i FROM Inventory i WHERE i.location = :location", Inventory.class)
+                .setParameter("location", location)
+                .getResultList();
     }
 }

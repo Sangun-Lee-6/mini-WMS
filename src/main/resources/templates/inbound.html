@@ -6,6 +6,14 @@
     <link rel="stylesheet" th:href="@{/css/inbound.css}">
 </head>
 <body>
+<nav style="margin-bottom: 20px;">
+    <button onclick="location.href='/inbound'">입고</button>
+    <button onclick="location.href='/inventory'">보관</button>
+    <button onclick="alert('피킹 화면 준비 중')">피킹</button>
+    <button onclick="alert('패킹 화면 준비 중')">패킹</button>
+    <button onclick="alert('출고 화면 준비 중')">출고</button>
+</nav>
+
 <h1>📦 입고 현황</h1>
 <button id="inboundButton">입고 등록</button>
 <ul id="inboundList"></ul>

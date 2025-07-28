@@ -22,5 +22,4 @@ public class InboundItem {
     private Product product;
 
     private Long quantity;
-
 }
