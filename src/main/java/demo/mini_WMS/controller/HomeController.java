@@ -1,9 +1,8 @@
 package demo.mini_WMS.controller;
 
-import demo.mini_WMS.domain.Inventory;
-import demo.mini_WMS.domain.Warehouse;
-import demo.mini_WMS.domain.WarehouseLocation;
+import demo.mini_WMS.domain.*;
 import demo.mini_WMS.repository.InventoryRepository;
+import demo.mini_WMS.repository.OrderRepository;
 import demo.mini_WMS.repository.WarehouseLocationRepository;
 import demo.mini_WMS.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +18,7 @@ public class HomeController {
     private final WarehouseLocationRepository locationRepo;
     private final InventoryRepository inventoryRepo;
     private final WarehouseRepository warehouseRepo;
+    private final OrderRepository orderRepository;
 
     @GetMapping("/")
     public String home(){
@@ -47,4 +47,12 @@ public class HomeController {
 
         return "inventory";
     }
+
+    @GetMapping("/picking")
+    public String pickingPage(Model model) {
+        List<Orders> waitingOrders = orderRepository.findByStatus(OrderStatus.WAITING);
+        model.addAttribute("orders", waitingOrders);
+        return "picking";
+    }
+
 }

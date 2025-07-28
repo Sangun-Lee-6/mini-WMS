@@ -1,0 +1,61 @@
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 40px;
+}
+
+h1, h2 {
+    color: #00bcd4;
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #00bcd4;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+    background-color: #0097a7;
+}
+
+/* ✅ 리스트 전체는 블록 요소로 처리 */
+.order-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* ✅ 카드: 가로폭 25%, 나머진 비워두고 왼쪽 정렬 */
+.order-card {
+    background-color: #1c1c1c;
+    border: 1px solid #444;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,188,212,0.2);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    width: 25%; /* 💡 전체 화면의 1/4 */
+    margin-bottom: 1.5rem;
+}
+
+.result-box {
+    margin-top: 1rem;
+    font-weight: bold;
+    color: #00e676;
+}

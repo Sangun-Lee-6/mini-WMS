@@ -1,0 +1,26 @@
+<!-- templates/picking.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>피킹 시뮬레이션</title>
+    <link rel="stylesheet" th:href="@{/css/picking.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>🚚 피킹 최적화 시뮬레이션</h1>
+
+    <div class="button-group">
+        <button type="button" id="generateOrderBtn">+ 가상 주문 생성하기</button>
+        <button type="button" id="runPickingV1Btn" disabled>📦 피킹 최적화 V1</button>
+    </div>
+
+    <h2>🕓 피킹 대기 목록</h2>
+    <ul id="orderList" class="order-list">로딩 중...</ul>
+
+    <div id="pickingResult" class="result-box"></div>
+</div>
+
+<script th:src="@{/js/picking.js}"></script>
+</body>
+</html>
