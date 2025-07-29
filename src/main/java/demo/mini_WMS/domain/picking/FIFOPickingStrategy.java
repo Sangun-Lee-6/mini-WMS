@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Component("fifo")
 public class FIFOPickingStrategy implements PickingStrategy{
     @Override
     public List<PickingItem> generatePickingPlan(Map<Long, Integer> productQuantities, Map<Long, List<Inventory>> inventoryMap) {
@@ -65,6 +65,11 @@ public class FIFOPickingStrategy implements PickingStrategy{
 
         int totalMoveTime = totalDistance * MOVE_TIME_PER_CELL;
         int totalPickTime = totalItems * PICK_TIME_PER_ITEM;
+
+        int returnDistance = Math.abs(currentRow) + Math.abs(currentCol);
+        totalDistance += returnDistance;
+        totalMoveTime += returnDistance * MOVE_TIME_PER_CELL;
+
         int totalTime = totalMoveTime + totalPickTime;
 
         return new PickingResult(totalItems, totalDistance, totalTime);

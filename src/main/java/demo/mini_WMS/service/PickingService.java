@@ -26,12 +26,22 @@ public class PickingService {
     private final InventoryRepository inventoryRepository;
     private final PickingRepository pickingRepository;
 
-    private final PickingStrategy pickingStrategy; // 인터페이스 기반 알고리즘 전략 주입
+    /**
+     * 기존 단일 전략 → 다중 전략 Map으로 변경
+     * Spring이 Bean 이름(@Component("fifo"), @Component("greedy"))을 Key로 주입함
+     */
+    private final Map<String, PickingStrategy> strategyMap;
 
     /**
      * 피킹 전체 프로세스 실행 (주문 취합 → 피킹 → KPI 기록)
      */
-    public PickingResultResponse executePicking(String algorithmName) {
+    public PickingResultResponse executePicking(String algorithmName, boolean simulate) {
+        // 피킹 알고리즘 선택
+        PickingStrategy pickingStrategy = strategyMap.get(algorithmName.toLowerCase());
+        if (pickingStrategy == null) {
+            throw new IllegalArgumentException("지원하지 않는 피킹 알고리즘: " + algorithmName);
+        }
+
         // 1. 주문 목록에서 피킹 대상 상품 총 수량 취합
         Map<Long, Integer> totalProductQuantities = aggregateProductQuantitiesFromWaitingOrders();
 
@@ -76,7 +86,6 @@ public class PickingService {
          */
 
 
-
         // 5. Picking 객체에 피킹 아이템 추가
         for (PickingItem item : pickingItems) {
             picking.addItem(item);
@@ -92,16 +101,18 @@ public class PickingService {
         // 8. KPI 기록
         picking.recordKPI(result.getTotalItems(), result.getTotalDistance(), result.getTotalTime());
 
-        // 9. 주문 상태 PACKING 으로 변경
+        // 9. 주문 상태 PACKING 으로 변경(simulate: false)인 경우에만
+        if(!simulate){
         int updatedCount = orderRepository.updateStatusByStatus(OrderStatus.WAITING, OrderStatus.PICKED);
         if (updatedCount == 0) {
             throw new IllegalStateException("WAITING 상태의 주문이 존재하지 않아 상태를 변경할 수 없습니다.");
-        }
+        }}
 
-        // 10. 재고 차감
+        // 10. 재고 차감(simulate: false)인 경우에만
+        if(!simulate){
         for (PickingItem item : picking.getItems()) {
             inventoryRepository.decreaseQuantity(item.getProduct().getId(), item.getLocation(), item.getQuantity());
-        }
+        }}
 
         List<PickingResultResponse.PickingItemDto> itemDtos = picking.getItems().stream()
                 .map(item -> new PickingResultResponse.PickingItemDto(

@@ -92,3 +92,32 @@ nav button {
 nav button:hover {
     background-color: #0097a7;
 }
+
+.policy-banner {
+    background-color: #000000;   /* 배경 검은색 */
+    padding: 10px 14px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.2); /* 밝은 그림자 */
+    max-width: 400px;
+}
+
+.policy-banner h3 {
+    margin-top: 0;
+    font-size: 16px;
+    color: #00bcd4;
+    margin-bottom: 8px;
+}
+
+.policy-banner ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    color: #00bcd4;              /* 리스트 글씨도 노란색 */
+}
+
+.policy-banner li {
+    margin-bottom: 5px;
+    line-height: 1.4;
+}
+

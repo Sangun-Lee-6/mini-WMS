@@ -18,6 +18,14 @@ public class PickingController {
      */
     @PostMapping
     public PickingResultResponse runPicking(@RequestBody PickingRequest request) {
-        return pickingService.executePicking(request.getAlgorithm());
+        return pickingService.executePicking(request.getAlgorithm(), false);
+    }
+
+    /**
+     * 피킹 시뮬레이션 : 재고 상태 변화 없이 KPI 측정 용도
+     */
+    @PostMapping("/simulate")
+    public PickingResultResponse runPickingSimulation(@RequestBody PickingRequest request) {
+        return pickingService.executePicking(request.getAlgorithm(), true);
     }
 }
