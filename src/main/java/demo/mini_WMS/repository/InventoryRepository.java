@@ -7,7 +7,9 @@ import demo.mini_WMS.domain.WarehouseLocation;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,10 +46,33 @@ public class InventoryRepository {
         return em.createQuery("SELECT i FROM Inventory i", Inventory.class).getResultList();
     }
 
-    // findByLocation 구현
     public List<Inventory> findByLocation(WarehouseLocation location) {
         return em.createQuery("SELECT i FROM Inventory i WHERE i.location = :location", Inventory.class)
                 .setParameter("location", location)
                 .getResultList();
+    }
+
+    public List<Inventory> findByProductIds(Collection<Long> productIds) {
+        return em.createQuery("SELECT i FROM Inventory i WHERE i.product.id IN :productIds", Inventory.class)
+                .setParameter("productIds", productIds)
+                .getResultList();
+    }
+
+    @Transactional
+    public void decreaseQuantity(Long productId, WarehouseLocation location, int quantity) {
+
+        Inventory inventory = em.createQuery(
+                        "SELECT i FROM Inventory i WHERE i.product.id = :productId AND i.location = :location",
+                        Inventory.class)
+                .setParameter("productId", productId)
+                .setParameter("location", location)
+                .getSingleResult();
+
+        long updatedQty = inventory.getQuantity() - quantity;
+        if (updatedQty < 0) {
+            throw new IllegalStateException("재고 수량이 부족합니다. productId=" + productId + ", locationId=" + location.getId());
+        }
+
+        inventory.setQuantity(updatedQty);
     }
 }

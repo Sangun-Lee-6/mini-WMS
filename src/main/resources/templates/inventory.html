@@ -10,13 +10,25 @@
 <nav style="margin-bottom: 20px;">
     <button onclick="location.href='/inbound'">입고</button>
     <button onclick="location.href='/inventory'">보관</button>
-    <button onclick="alert('피킹 화면 준비 중')">피킹</button>
+    <button onclick="location.href='/picking'">피킹</button>
     <button onclick="alert('패킹 화면 준비 중')">패킹</button>
     <button onclick="alert('출고 화면 준비 중')">출고</button>
 </nav>
 
 
-<h1>🏗️창고 보관 위치</h1>
+
+<h1>🏗️보관 현황</h1>
+
+<div class="policy-banner">
+    <h3>📌 피킹 정책 안내</h3>
+    <ul>
+        <li>📦 한 칸에는 <strong>1종류</strong>의 제품만 보관됩니다.</li>
+        <li>🔢 최대 <strong>5개</strong>까지 적재 가능합니다.</li>
+        <li>🚶‍♂️ 피킹 작업자는 <strong>좌측 상단(0,0)</strong>에서 출발합니다.</li>
+        <li>⏱️ 피킹 시간: <strong>1개 당 5초</strong></li>
+        <li>🧭 이동 시간: <strong>칸 당 20초</strong></li>
+    </ul>
+</div>
 
 <table>
     <tbody>
@@ -32,7 +44,6 @@
     </tr>
     </tbody>
 </table>
-
 
 </body>
 </html>

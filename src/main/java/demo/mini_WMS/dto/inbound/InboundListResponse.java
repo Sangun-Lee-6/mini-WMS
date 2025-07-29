@@ -1,6 +1,6 @@
 package demo.mini_WMS.dto.inbound;
 
-import demo.mini_WMS.domain.Inbound;
+import demo.mini_WMS.domain.inbound.Inbound;
 import lombok.Builder;
 import lombok.Getter;
 

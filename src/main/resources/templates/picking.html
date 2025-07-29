@@ -7,8 +7,17 @@
     <link rel="stylesheet" th:href="@{/css/picking.css}" />
 </head>
 <body>
+
+<nav style="margin-bottom: 20px;">
+    <button onclick="location.href='/inbound'">입고</button>
+    <button onclick="location.href='/inventory'">보관</button>
+    <button onclick="location.href='/picking'">피킹</button>
+    <button onclick="alert('패킹 화면 준비 중')">패킹</button>
+    <button onclick="alert('출고 화면 준비 중')">출고</button>
+</nav>
+
 <div class="container">
-    <h1>🚚 피킹 최적화 시뮬레이션</h1>
+    <h1>🚶‍♂️ 피킹 최적화 시뮬레이션</h1>
 
     <div class="button-group">
         <button type="button" id="generateOrderBtn">+ 가상 주문 생성하기</button>
@@ -18,6 +27,7 @@
     <h2>🕓 피킹 대기 목록</h2>
     <ul id="orderList" class="order-list">로딩 중...</ul>
 
+    <h2>📊 피킹 결과</h2>
     <div id="pickingResult" class="result-box"></div>
 </div>
 

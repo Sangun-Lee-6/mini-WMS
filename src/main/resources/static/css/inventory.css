@@ -139,3 +139,35 @@ nav button:hover {
     display: block;
     margin-bottom: 6px; /* ✅ 여기만 추가하면 줄 띄워짐 */
 }
+.policy-banner {
+    background-color: #1c1c1c;
+    color: #f0e68c;
+    border-left: 6px solid #00bcd4;
+    padding: 16px 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 188, 212, 0.3);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 20px;
+    max-width: 700px;
+}
+
+.policy-banner h3 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #00bcd4;
+    margin-bottom: 10px;
+}
+
+.policy-banner ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.policy-banner li {
+    margin-bottom: 6px;
+    line-height: 1.6;
+}
+
+

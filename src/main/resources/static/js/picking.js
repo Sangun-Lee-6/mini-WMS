@@ -45,13 +45,6 @@ async function fetchWaitingOrders() {
     });
 }
 
-async function runPickingOptimization() {
-    if (!currentOrderId) return;
-    const res = await fetch(`/api/picking/v1?orderId=${currentOrderId}`);
-    const data = await res.json();
-    document.getElementById("pickingResult").innerText = `✅ 총 소요 시간: ${data.totalTime}초`;
-}
-
 function formatDate(dateStr) {
     const date = new Date(dateStr);
     return date.toLocaleString('ko-KR', {
@@ -62,3 +55,48 @@ function formatDate(dateStr) {
         minute: '2-digit'
     });
 }
+async function runPickingOptimization() {
+    const body = { algorithm: "greedy" };
+
+    const res = await fetch("/api/picking", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    });
+
+    if (!res.ok) {
+        alert("❌ 피킹 최적화 실패");
+        return;
+    }
+
+    const data = await res.json();
+
+    const resultBox = document.getElementById("pickingResult");
+    resultBox.innerHTML = `
+        <p><strong>✅ 알고리즘:</strong> ${data.algorithm}</p>
+        <p><strong>📦 총 품목 수:</strong> ${data.totalItems}</p>
+        <p><strong>📏 총 이동 거리:</strong> ${data.totalDistance}</p>
+        <p><strong>⏱️ 총 소요 시간:</strong> ${data.totalTime}초</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>상품명</th>
+                    <th>수량</th>
+                    <th>위치</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${data.items.map(item => `
+                    <tr>
+                        <td>${item.productName}</td>
+                        <td>${item.quantity}</td>
+                        <td>${item.locationCode}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+}
+

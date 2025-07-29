@@ -1,5 +1,6 @@
-package demo.mini_WMS.domain;
+package demo.mini_WMS.domain.inbound;
 
+import demo.mini_WMS.domain.Product;
 import jakarta.persistence.*;
 import lombok.*;
 

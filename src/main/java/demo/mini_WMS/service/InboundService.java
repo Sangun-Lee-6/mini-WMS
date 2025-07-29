@@ -1,6 +1,8 @@
 package demo.mini_WMS.service;
 
 import demo.mini_WMS.domain.*;
+import demo.mini_WMS.domain.inbound.Inbound;
+import demo.mini_WMS.domain.inbound.InboundItem;
 import demo.mini_WMS.dto.inbound.InboundCreateRequest;
 import demo.mini_WMS.repository.InventoryRepository;
 import demo.mini_WMS.repository.ProductRepository;
@@ -13,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor

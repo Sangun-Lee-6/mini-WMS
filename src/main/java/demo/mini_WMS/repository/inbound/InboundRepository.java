@@ -1,6 +1,6 @@
 package demo.mini_WMS.repository.inbound;
 
-import demo.mini_WMS.domain.Inbound;
+import demo.mini_WMS.domain.inbound.Inbound;
 
 import java.util.List;
 import java.util.Optional;

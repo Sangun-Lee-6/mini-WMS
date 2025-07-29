@@ -1,6 +1,6 @@
 package demo.mini_WMS.repository.inbound;
 
-import demo.mini_WMS.domain.InboundItem;
+import demo.mini_WMS.domain.inbound.InboundItem;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
