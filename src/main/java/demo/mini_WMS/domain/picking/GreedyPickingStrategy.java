@@ -79,7 +79,7 @@ public class GreedyPickingStrategy implements PickingStrategy {
             currentCol = best.inv.getLocation().getColIdx();
 
             // 실제 재고 감소(시뮬레이션)
-            best.inv.setQuantity(best.inv.getQuantity() - pickQty);
+//            best.inv.setQuantity(best.inv.getQuantity() - pickQty);
         }
 
         return result;

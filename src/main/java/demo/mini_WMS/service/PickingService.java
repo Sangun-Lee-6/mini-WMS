@@ -58,33 +58,34 @@ public class PickingService {
         //{ "상품ID" : [재고 목록] }
         Map<Long, List<Inventory>> inventoryMap = mapInventoriesByProductId(inventories);
 
-        /*
-        System.out.println("=== [DEBUG] inventoryMap 구성 ===");
-        for (Map.Entry<Long, List<Inventory>> entry : inventoryMap.entrySet()) {
-            Long productId = entry.getKey();
-            List<Inventory> invList = entry.getValue();
+        System.out.println("=== [DEBUG] generatePickingPlan() INPUT ===");
+        System.out.println("totalProductQuantities:");
+        for (Map.Entry<Long, Integer> entry : totalProductQuantities.entrySet()) {
+            System.out.printf("  productId=%d | qty=%d%n", entry.getKey(), entry.getValue());
+        }
 
-            System.out.println("상품ID: " + productId);
-            for (Inventory inv : invList) {
-                System.out.println("  - 위치: " + inv.getLocation().getCode() +
-                        ", 수량: " + inv.getQuantity());
+        System.out.println("inventoryMap:");
+        for (Map.Entry<Long, List<Inventory>> entry : inventoryMap.entrySet()) {
+            System.out.println("  productId=" + entry.getKey());
+            for (Inventory inv : entry.getValue()) {
+                System.out.printf("    locId=%d | locCode=%s | qty=%d%n",
+                        inv.getLocation().getId(),
+                        inv.getLocation().getCode(),
+                        inv.getQuantity());
             }
         }
-        */
 
         // 4. 피킹 전략을 이용해 PickingItem 생성
         List<PickingItem> pickingItems = pickingStrategy.generatePickingPlan(totalProductQuantities, inventoryMap);
 
-        /*
-          System.out.println("=== [DEBUG] 피킹 계획 상세 ===");
-          for (PickingItem item : pickingItems) {
-          System.out.printf("상품: %s | 위치: %s | 수량: %d\n",
+        System.out.println("=== [DEBUG] generatePickingPlan() OUTPUT ===");
+        for (PickingItem item : pickingItems) {
+            System.out.printf("  productId=%d | name=%s | locCode=%s | qty=%d%n",
+                    item.getProduct().getId(),
                     item.getProduct().getName(),
                     item.getLocation().getCode(),
                     item.getQuantity());
         }
-         */
-
 
         // 5. Picking 객체에 피킹 아이템 추가
         for (PickingItem item : pickingItems) {
@@ -96,7 +97,24 @@ public class PickingService {
 
         // 7. KPI 계산 (전략에 따라 다름)
         PickingInput input = new PickingInput(picking.getItems());
+
+
+        System.out.println("=== [DEBUG] run() INPUT ===");
+        for (PickingItem item : input.getItems()) {
+            System.out.printf("  productId=%d | name=%s | locCode=%s | qty=%d%n",
+                    item.getProduct().getId(),
+                    item.getProduct().getName(),
+                    item.getLocation().getCode(),
+                    item.getQuantity());
+        }
+
         PickingResult result = pickingStrategy.run(input);
+
+        System.out.println("=== [DEBUG] run() OUTPUT ===");
+        System.out.printf("  totalItems=%d | totalDistance=%d | totalTime=%d%n",
+                result.getTotalItems(),
+                result.getTotalDistance(),
+                result.getTotalTime());
 
         // 8. KPI 기록
         picking.recordKPI(result.getTotalItems(), result.getTotalDistance(), result.getTotalTime());

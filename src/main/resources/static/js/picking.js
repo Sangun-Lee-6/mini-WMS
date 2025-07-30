@@ -162,7 +162,14 @@ function formatDate(dateStr) {
 }
 
 async function runSimulationCompare() {
-    const algorithms = ["fifo", "greedy", "tps"];
+    const btn = document.getElementById("compareSimulateBtn");
+
+    // 버튼 비활성화 (음영 처리)
+    btn.disabled = true;
+    btn.style.opacity = "0.5";
+    btn.style.cursor = "not-allowed";
+
+    const algorithms = ["fifo", "greedy", "tsp"];
     const results = [];
 
     for (let algo of algorithms) {
