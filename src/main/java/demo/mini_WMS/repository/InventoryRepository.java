@@ -69,9 +69,9 @@ public class InventoryRepository {
                 .getSingleResult();
 
         long updatedQty = inventory.getQuantity() - quantity;
-        if (updatedQty < 0) {
-            throw new IllegalStateException("재고 수량이 부족합니다. productId=" + productId + ", locationId=" + location.getId());
-        }
+//        if (updatedQty < 0) {
+//            throw new IllegalStateException("재고 수량이 부족합니다. productId=" + productId + ", locationId=" + location.getId());
+//        }
 
         inventory.setQuantity(updatedQty);
     }

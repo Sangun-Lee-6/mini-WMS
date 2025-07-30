@@ -187,6 +187,7 @@ public class PickingService {
             map.computeIfAbsent(productId, k -> new ArrayList<>()).add(inv);
         }
 
+
         // 각 상품의 재고 리스트를 (rowIdx + colIdx) 기준으로 정렬
         //     → 멘해튼 거리상 0,0에 가까운 위치부터 선택 가능하도록
         for (List<Inventory> invList : map.values()) {

@@ -126,3 +126,51 @@ nav button:hover {
     line-height: 1.4;
 }
 
+.algo-select {
+    background-color: #000000;     /* 검은 배경 */
+    color: #00bcd4;            /* 하늘색 글씨 */
+    padding: 6px 10px;
+    font-size: 14px;
+    margin-left: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+}
+.algo-select option {
+    background-color: #000000;
+    color: #00bcd4;
+}
+
+.button-group button,
+.algo-select {
+    margin-right: 5px;
+}
+
+.button-group {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* 가상 주문 생성 ↔ 피킹 시뮬레이션 비교 ↔ picking-actions 간 간격 */
+}
+
+.picking-actions {
+    display: inline-flex;
+    align-items: center;
+}
+
+.picking-actions select {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.picking-actions button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.picking-actions select,
+.picking-actions button {
+    margin: 0;
+    padding: 6px 10px;
+    height: 35px;
+}

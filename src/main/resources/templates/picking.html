@@ -22,7 +22,18 @@
     <div class="button-group">
         <button type="button" id="generateOrderBtn">+ 가상 주문 생성하기</button>
         <button type="button" id="compareSimulateBtn" disabled>📊 피킹 시뮬레이션 비교</button>
+
+        <div class="picking-actions">
+            <select id="algorithmSelect" class="algo-select">
+                <option value="fifo">FIFO</option>
+                <option value="greedy">Greedy</option>
+                <option value="tsp">TSP</option>
+            </select>
+            <button type="button" id="executePickingBtn" disabled>🚶 피킹 실행</button>
+        </div>
     </div>
+
+
 
     <div class="policy-banner">
         <h3>📌 피킹 정책 안내</h3>
@@ -39,8 +50,12 @@
     <h2>🕓 피킹 대기 목록</h2>
     <ul id="orderList" class="order-list">로딩 중...</ul>
 
-    <h2>📊 피킹 결과 비교</h2>
+    <h2>📊 피킹 시뮬레이션 결과 비교</h2>
     <div id="pickingResult" class="result-box"></div>
+
+    <h2>✅ 피킹 실행 결과</h2>
+    <div id="pickingExecutionResult" class="result-box"></div>
+
 </div>
 
 <script th:src="@{/js/picking.js}"></script>
